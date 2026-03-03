@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Quick Exit Button Demo</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 20px;
+				line-height: 1.6;
+			}
+			h1, h2 {
+				color: #333;
+			}
+			.content-block {
+				background: #f4f4f4;
+				padding: 20px;
+				margin-bottom: 20px;
+				border-radius: 8px;
+			}
+			.spacer {
+				height: 1500px;
+				background: linear-gradient(to bottom, #fff, #eee);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #888;
+				border: 1px dashed #ccc;
+				margin: 20px 0;
+			}
+		</style>
+		<!-- Import the component -->
+		<script src="/static/quick-exit-button.mjs" defer></script>
+	</head>
+	<body>
+		<h1>Quick Exit Button Demo</h1>
+		<p>This page demonstrates the usage of the <code>&lt;quick-exit-button&gt;</code> web component.</p>
+
+		<div class="content-block">
+			<h2>Features to Test</h2>
+			<ul>
+				<li>
+					<strong>Click the button:</strong> It should immediately navigate to Google (or configured URL).
+				</li>
+				<li><strong>Press 'Escape':</strong> It should trigger the exit immediately.</li>
+				<li><strong>Scroll down:</strong> The button should remain fixed in the bottom-right corner.</li>
+				<li><strong>Mobile View:</strong> Resize the browser to see the mobile layout (full width).</li>
+			</ul>
+		</div>
+
+		<div class="content-block">
+			<h2>Configuration Examples</h2>
+			<p>The button currently on this page uses default settings:</p>
+			<code>&lt;quick-exit-button&gt;&lt;/quick-exit-button&gt;</code>
+
+			<p>You can also configure it (view source code):</p>
+			<pre>&lt;quick-exit-button url="https://weather.com" label="Leave Now" theme="orange"&gt;&lt;/quick-exit-button&gt;</pre>
+		</div>
+
+		<h3>Scroll down to see sticky behavior...</h3>
+		<div class="spacer">
+			(Long content to demonstrate scrolling)
+		</div>
+		<p>End of page.</p>
+
+		<!-- The Component -->
+		<!-- You can place this anywhere in the body -->
+		<quick-exit-button></quick-exit-button>
+
+		<!-- Example of a customized button (commented out to avoid clutter, uncomment to test) -->
+		<!-- <quick-exit-button url="https://www.bbc.com/weather" label="Weather (Esc)" theme="blue"></quick-exit-button> -->
+	</body>
+</html>
