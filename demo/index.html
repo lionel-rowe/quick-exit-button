@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Quick Exit Button Demo</title>
+		<title>Sample Page</title>
 		<style>
 			body {
 				font-family: sans-serif;
@@ -39,6 +39,19 @@
 		<h1>Quick Exit Button Demo</h1>
 		<p>This page demonstrates the usage of the <code>&lt;quick-exit-button&gt;</code> web component.</p>
 
+		<div>
+			<h2>Links</h2>
+			<p>Here's a fake (internal) link to populate browsing history for testing:</p>
+			<script>
+				document.title = `Sample Page: ${
+					new URL(location.href).pathname.slice(1) ?? 'Home'
+				}`
+
+				const uuid = crypto.randomUUID()
+				document.write(`<a href="/${uuid}">Fake Page ${uuid}</a>`)
+			</script>
+		</div>
+
 		<div class="content-block">
 			<h2>Features to Test</h2>
 			<ul>
@@ -46,7 +59,8 @@
 					<strong>Click the button:</strong> It should immediately navigate to Google (or configured URL).
 				</li>
 				<li><strong>Press 'Escape':</strong> It should trigger the exit immediately.</li>
-				<li><strong>Scroll down:</strong> The button should remain fixed in the bottom-right corner.</li>
+				<li><strong>Hover the '?':</strong> It should show safety information.</li>
+				<li><strong>Scroll down:</strong> The button should remain fixed in the top-right corner.</li>
 				<li><strong>Mobile View:</strong> Resize the browser to see the mobile layout (full width).</li>
 			</ul>
 		</div>

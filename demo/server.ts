@@ -8,7 +8,6 @@ Deno.serve({ port: 8080 }, async (req) => {
 		console.log(url.pathname)
 		const fsRoot = fromFileUrl(new URL('../src/', import.meta.url))
 
-		// console.log({ urlRoot, fsRoot })
 		return serveDir(req, { urlRoot, fsRoot })
 	}
 
