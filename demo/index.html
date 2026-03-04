@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link
+			rel="icon"
+			href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTE2IDI2YTMgMyAwIDExMC02IDMgMyAwIDAxMCA2em0tMy0yMmg2djE0aC02VjR6IiBmaWxsPSJyZWQiLz48L3N2Zz4="
+			type="image/svg+xml"
+		>
 		<title>Sample Page</title>
 		<style>
 			body {
@@ -43,12 +48,14 @@
 			<h2>Links</h2>
 			<p>Here's a fake (internal) link to populate browsing history for testing:</p>
 			<script>
+				const uuid = crypto.randomUUID()
+				document.write(`<a href="/${uuid}">Fake Page ${uuid}</a>`)
 				document.title = `Sample Page: ${
 					new URL(location.href).pathname.slice(1) ?? 'Home'
 				}`
 
-				const uuid = crypto.randomUUID()
-				document.write(`<a href="/${uuid}">Fake Page ${uuid}</a>`)
+				// for testing
+				window.addEventListener('beforeunload', () => '')
 			</script>
 		</div>
 
@@ -82,7 +89,15 @@
 
 		<!-- The Component -->
 		<!-- You can place this anywhere in the body -->
-		<quick-exit-button></quick-exit-button>
+		<!-- <quick-exit-button></quick-exit-button> -->
+
+		<!-- <quick-exit-button>
+			<style slot="custom-styles">
+				.exit-button {
+					background-color: orange;
+				}
+			</style>
+		</quick-exit-button> -->
 
 		<!-- Example of a customized button (commented out to avoid clutter, uncomment to test) -->
 		<!-- <quick-exit-button url="https://www.bbc.com/weather" label="Weather (Esc)" theme="blue"></quick-exit-button> -->

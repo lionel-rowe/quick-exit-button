@@ -1,7 +1,7 @@
 import { serveDir } from '@std/http/file-server'
 import { fromFileUrl } from '@std/path'
 
-Deno.serve({ port: 8080 }, async (req) => {
+Deno.serve({ port: 8000 }, async (req) => {
 	const url = new URL(req.url)
 	const urlRoot = 'static/'
 	if (url.pathname.startsWith(`/${urlRoot}`)) {
