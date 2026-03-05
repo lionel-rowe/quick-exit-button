@@ -89,5 +89,11 @@ Simply add a `<style>` element inside the component.
 
 ## Prior Art
 
-- https://github.com/bboyle/quick-exit
+Some good but imperfect implementations:
+
 - https://github.com/TodayDesign/panic-button
+  - Includes keyboard shortcut. Overwrites current site _title_ before navigation, but can still be navigated back to via "Back" button.
+- https://github.com/bboyle/quick-exit
+  - Nice visual design, but only overwrites current history entry to current site's home page, which would often still be sensitive.
+- Implementation on https://womensaid.org.uk/
+  - Good safety/navigation features, but a little small and easy to miss, and lacking help or further info link.
