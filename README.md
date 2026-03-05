@@ -8,6 +8,7 @@ Following the recommendations from [_Click Here to Exit: An Evaluation of Quick 
 
 - Easy to locate and use in emergencies.
 - Highly visible on all backgrounds, devices, and screen sizes with default styles.
+- Fixed position stays on screen while scrolling, ensuring the button is always visible.
 - Includes keyboard shortcut (<kbd>Esc</kbd> key) for quick access.
 - Immediately clears screen and blanks title and favicon.
 - Navigates current tab away from the site.
@@ -17,6 +18,7 @@ Following the recommendations from [_Click Here to Exit: An Evaluation of Quick 
 - Destination URLs are neutral, high-traffic, reasonably fast-loading sites (e.g., Google), but are configurable by the host site. For example, in countries that block Google, the default should be set to a local search engine or news site instead. As far as possible, locale-independent sites should be used as it's possible the sensitive site is in a different language from the user's native language that they typically use to browse the web.
 - Default text is clear and unambiguous, but is configurable, e.g. for other languages or to add context-specific safety instructions.
 - Easy to add to any site, with zero dependencies, sensible defaults, styles that won't be broken by the host site's CSS, and minimal technical knowledge required.
+- Styles are optimized for smaller screens and touch interactions. On mobile, the button is moved to the bottom of the screen for easy thumb access, and the keyboard shortcut description is hidden as it's not relevant without a physical keyboard.
 
 ## Design Decisions
 
@@ -54,22 +56,20 @@ Then place the component anywhere in your `<body>`.
 <quick-exit-button label="Leave Site Immediately" background-url="https://weather.com"></quick-exit-button>
 ```
 
-## Features
+## TODO (MVP)
 
-- **Instant Navigation**: Uses `window.location.replace()` to prevent the "Back" button from returning to your site.
-- **Keyboard Shortcut**: Pressing `Esc` immediately triggers the exit.
-- **Always Visible**: Fixed position (top-right) stays on screen while scrolling.
-- **High Visibility**: Designed with high contrast and high z-index (partially immune to cookie banners).
-- **Shadow DOM**: Styles are encapsulated and won't leak into or be broken by your site's CSS.
-- **Zero Dependencies**: Just drop it in.
+- Decide on yellow vs red default color.
+- Make all colors configurable via CSS variables on `:host`.
+- Accessibility: Ensure the button is accessible via keyboard and screen readers (done? Needs checking).
 
-## TODO
+## TODO (post-MVP)
 
-- **Graceful Degradation**: If JavaScript is disabled, a simple link should still be available.
-- **Accessibility**: Ensure the button is accessible via keyboard and screen readers.
-- **Mobile Optimization**: Adjust styles for smaller screens and touch interactions. E.g. maybe BOTTOM right on mobile for easier thumb access?
+- Graceful Degradation: If JavaScript is disabled, a simple link should still be available (maybe? This could make config more difficult and may be a poor fit for sites with limited technical resources).
 - Maybe add invisible hit box (`z-index: -2147483648` to avoid interfering with other elements) around the button to make it easier to click in a panic?
 - Add e2e tests with Puppeteer.
+- Stretch goal: A bespoke, permalinked "how to hide your internet history" page designed for readability, usability, and prioritization high->low impact to avoid overwhelming users with information. This might also be interactive or personalized based on the user's browser and device as detected from UA string.
+- Stretch goal: Plugins/widgets/etc for popular CMSs (e.g. WordPress) to make it even easier for non-technical users to add the button to their sites.
+- Stretch goal: Translations of docs and `i18n-*` attributes into other languages.
 
 ## Configuration
 
