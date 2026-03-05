@@ -3,12 +3,17 @@
 	"exports": {
 	},
 	"tasks": {
-		"start": "deno run -RN ./demo/server.ts"
+		"start": "deno run -A ./demo/server.ts"
 		// "test": "deno test -R"
 	},
 	"imports": {
+		"@std/async": "jsr:@std/async@^1.2.0",
+		"@std/fmt": "jsr:@std/fmt@^1.0.9",
+		"@std/html": "jsr:@std/html@^1.0.5",
 		"@std/http": "jsr:@std/http@^1.0.25",
-		"@std/path": "jsr:@std/path@^1.1.4"
+		"@std/path": "jsr:@std/path@^1.1.4",
+		"@std/regexp/unstable-replace-all-async": "https://raw.githubusercontent.com/lionel-rowe/std/0c31b2f762acc926b6866ad7515b71225db50c0c/regexp/unstable_replace_all_async.ts",
+		"minify": "npm:minify@^15.2.0"
 	},
 	"fmt": {
 		"semiColons": false,
@@ -17,7 +22,7 @@
 		"indentWidth": 4,
 		"singleQuote": true,
 		"proseWrap": "preserve",
-		"exclude": ["README.md"]
+		"exclude": ["src/template.html"]
 	},
 	"compilerOptions": { "strict": true },
 	"lint": {

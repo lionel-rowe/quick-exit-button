@@ -1,0 +1,26 @@
+<style>{{ @include styles.css }}</style>
+
+<!-- Exit Button -->
+<button part="button" class="exit-button">
+	<div style="display: flex; align-items: center; justify-content: center; gap: 8px">
+		<span class="main-text" data-i18n="button-label"></span>
+		<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M18 6L6 18" stroke="currentColor" stroke-width="3" />
+			<path d="M6 6L18 18" stroke="currentColor" stroke-width="3" />
+		</svg>
+	</div>
+	<div>
+		<small data-i18n="shortcut-description" style="font-size: 0.5em; display: block; margin-top: 4px"></small>
+	</div>
+</button>
+
+<!-- Info Toggle-->
+<button class="info-toggle" aria-label="Safety Information" aria-describedby="safety-info">
+	{{ @include info-icon.svg }}
+</button>
+
+<!-- Safety Info Box -->
+<div id="safety-info" class="safety-info" hidden>
+	<span data-i18n="safety-text"></span>
+	<a target="_blank" rel="noopener noreferrer" data-i18n="safety-link"></a>
+</div>
