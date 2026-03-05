@@ -1,8 +1,8 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-import { escape } from '@std/html/entities'
+import { renderRichText } from './richText.ts'
 
-class QuickExitButton extends HTMLElement {
+export class QuickExitButton extends HTMLElement {
 	constructor() {
 		super()
 		this.attachShadow({ mode: 'open' })
@@ -17,11 +17,14 @@ class QuickExitButton extends HTMLElement {
 
 	static get observedAttributes() {
 		return [
-			'url',
-			'label',
-			'safety-text',
-			'safety-link-text',
-			'safety-link-url',
+			'foreground-url',
+			'background-url',
+			'i18n-label',
+			'i18n-shortcut-description',
+			'i18n-safety-text',
+			'i18n-safety-link-text',
+			'i18n-safety-link-url',
+			'i18n-safety-information',
 		]
 	}
 
@@ -46,23 +49,24 @@ class QuickExitButton extends HTMLElement {
 		this.#cleanupWindowListeners()
 	}
 
-	#handleKeydown: null | ((e: KeyboardEvent) => void) = null
+	#ac: AbortController | null = null
+
+	handleEvent(e: KeyboardEvent) {
+		if (e.key === 'Escape') {
+			this.#teardown()
+		}
+	}
 
 	#setupWindowListeners() {
-		if (this.#handleKeydown) return // Prevent double binding
-		this.#handleKeydown = (e) => {
-			if (e.key === 'Escape') {
-				this.#teardown()
-			}
+		if (typeof AbortController === 'function') {
+			this.#ac = new AbortController()
 		}
-		globalThis.addEventListener('keydown', this.#handleKeydown)
+		globalThis.addEventListener('keydown', this, { signal: this.#ac?.signal })
 	}
 
 	#cleanupWindowListeners() {
-		if (this.#handleKeydown) {
-			globalThis.removeEventListener('keydown', this.#handleKeydown)
-			this.#handleKeydown = null
-		}
+		this.#ac?.abort()
+		this.#ac = null
 	}
 
 	get #foregroundUrl() {
@@ -74,29 +78,31 @@ class QuickExitButton extends HTMLElement {
 	}
 
 	get #buttonLabel() {
-		return this.getAttribute('label') ?? 'Quick Exit'
+		return this.getAttribute('i18n-label') ?? 'Quick Exit'
 	}
 
 	get #shortcutDescription() {
-		return this.getAttribute('shortcut-description') ??
-			'Or press {#kbd}Esc{/kbd} on your keyboard.'
+		return this.getAttribute('i18n-shortcut-description') ??
+			'Or press {#kbd}Esc{/kbd} key.'
 	}
 
 	get #safetyText() {
-		return this.getAttribute('safety-text') ??
+		return this.getAttribute('i18n-safety-text') ??
 			'The button above will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history.'
 	}
 
 	get #safetyLinkText() {
-		return this.getAttribute('safety-link-text') ??
+		return this.getAttribute('i18n-safety-link-text') ??
 			'Learn how to hide your internet history.'
 	}
 
 	get #safetyLinkUrl() {
-		return (
-			this.getAttribute('safety-link-url') ??
-				'https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/'
-		)
+		return this.getAttribute('i18n-safety-link-url') ??
+			'https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/'
+	}
+
+	get #safetyInformation() {
+		return this.getAttribute('i18n-safety-information') ?? 'Safety Information'
 	}
 
 	#teardowns: ((this: QuickExitButton) => void)[] = [
@@ -146,7 +152,7 @@ class QuickExitButton extends HTMLElement {
 		const shadowRoot = this.shadowRoot!
 		shadowRoot.innerHTML = '{{ @include template.html }}'
 
-		const $toggle = shadowRoot.querySelector('.info-toggle')!
+		const $toggle = shadowRoot.querySelector('.info-toggle[data-i18n=safety-information]')!
 		const $info = shadowRoot.querySelector('.safety-info') as HTMLElement
 		const $exitbutton = shadowRoot.querySelector('.exit-button')!
 
@@ -159,7 +165,9 @@ class QuickExitButton extends HTMLElement {
 		renderRichText($shortcutDescription, this.#shortcutDescription)
 		renderRichText($safetyText, this.#safetyText)
 		renderRichText($safetyLink, this.#safetyLinkText)
+
 		$safetyLink.href = this.#safetyLinkUrl
+		$toggle.ariaLabel = this.#safetyInformation
 
 		$exitbutton.addEventListener('click', this.#teardown.bind(this))
 
@@ -195,39 +203,4 @@ class QuickExitButton extends HTMLElement {
 
 		this.#updateCustomStyles()
 	}
-}
-
-if (customElements.get('quick-exit-button') == null) {
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', insertSingleton)
-	} else {
-		insertSingleton()
-	}
-	customElements.define('quick-exit-button', QuickExitButton)
-}
-
-function insertSingleton() {
-	if (document.querySelector('quick-exit-button') == null) {
-		document.body.insertAdjacentHTML('afterbegin', '<quick-exit-button></quick-exit-button>')
-	}
-}
-
-function renderRichText($el: Element, richText: string) {
-	const re = /\{\s*(?<place>[#/])(?<tag>\w+)\s*\}/g
-
-	let innerHtml = ''
-	let i = 0
-
-	for (const part of richText.matchAll(re)) {
-		innerHtml += escape(richText.slice(i, part.index)) // Text before the tag
-		const { place, tag } = part.groups!
-		if (/^(kbd|b|i|strong|em)$/i.test(tag)) {
-			innerHtml += `<${place === '/' ? '/' : ''}${tag.toLowerCase()}>`
-		}
-		i = part.index + part[0].length
-	}
-
-	innerHtml += escape(richText.slice(i)) // Text after the last tag
-
-	$el.innerHTML = innerHtml
 }

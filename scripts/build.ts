@@ -17,7 +17,7 @@ const buildJs = debounce(async () => {
 	args.push('--platform', 'browser')
 	args.push('--format', 'iife')
 
-	args.push(join(IN_DIR, 'quick-exit-button.ts'))
+	args.push(join(IN_DIR, 'main.ts'))
 
 	const { stdout, stderr } = await new Deno.Command(
 		Deno.execPath(),

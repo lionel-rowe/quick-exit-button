@@ -1,7 +1,10 @@
+/* -2147483648 */
+
 :host {
+	--inset: 10px;
 	position: fixed;
-	top: 20px;
-	right: 20px;
+	top: var(--inset);
+	right: var(--inset);
 	z-index: 2147483647;
 	display: flex;
 	flex-direction: column;
@@ -19,25 +22,37 @@
 	cursor: pointer;
 	white-space: nowrap;
 	--scale: 1.03;
+	border: 2.4px solid white;
+}
+.exit-button .button-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 }
 .exit-button .main-text {
 	font-weight: bold;
 	text-transform: uppercase;
 }
-
 .exit-button, .info-toggle {
 	transition: transform 0.2s;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.exit-button:hover, .info-toggle:hover {
+:where(.exit-button, .info-toggle):hover {
 	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.exit-button:hover, .exit-button:focus, .info-toggle:hover, .info-toggle:focus {
+:where(.exit-button, .info-toggle):where(:hover, :focus) {
 	transform: scale(var(--scale, 1.1));
 	filter: brightness(110%);
 	box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.shortcut-description {
+	font-size: 0.8em;
+	display: block;
+	margin-top: 4px;
 }
 
 /* Info Toggle Button */
@@ -52,7 +67,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-right: 4px; /* Slight offset alignment tweaks if needed, or remove */
 	--scale: 1.15;
 }
 
@@ -94,23 +108,23 @@
 	display: block;
 }
 
-@media (max-width: 600px) {
+@media not (min-width: 480px) {
+	/* On portrait-mode phone only: Place at bottom for easier thumb access */
 	:host {
-		top: 10px;
-		right: 10px;
-		left: 10px;
-		width: auto;
-		align-items: stretch;
+		top: unset;
+		bottom: var(--inset);
+		/* flex-direction: column-reverse; */
 	}
-	button.exit-button {
-		width: 100%;
-		flex-grow: 1;
-		padding: 14px;
+}
+
+@media (pointer: coarse) {
+	/* On touch devices, hide the shortcut description as unlikely to have physical keyboard */
+	.shortcut-description {
+		display: none;
 	}
-	.safety-info {
-		max-width: none;
-		text-align: center;
-		margin-top: 4px;
+	/* make button correspondingly taller to compensate for reduced hit box */
+	.exit-button {
+		padding-block: 16px;
 	}
 }
 

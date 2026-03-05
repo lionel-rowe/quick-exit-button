@@ -4,7 +4,7 @@ A simple, self-contained Web Component to add a "Quick Exit" button to any websi
 
 Following the recommendations from [_Click Here to Exit: An Evaluation of Quick Exit Buttons_ (Turk & Hutchings, 2023)](https://www.cl.cam.ac.uk/~kst36/documents/click-here-to-exit.pdf), as well as general best practices for usability, security, and accessibility.
 
-## Requirements
+## Features
 
 - Easy to locate and use in emergencies.
 - Highly visible on all backgrounds, devices, and screen sizes with default styles.
@@ -14,8 +14,24 @@ Following the recommendations from [_Click Here to Exit: An Evaluation of Quick 
 - Prevents "Back" button from returning to the sensitive site.
 - Opens a new, history-less tab in case of multiple history entries containing the sensitive site.
 - Features a help tooltip explaining the button's limitations, with a link to further information on online safety.
-- Destination URLs should be neutral, high-traffic, reasonably fast-loading sites (e.g., Google), but are configurable by the host site. For example, in countries that block Google, the default should be set to a local search engine or news site instead. As far as possible, locale-independent sites should be used as it's possible the sensitive site is in a different language from the user's native language that they typically use to browse the web.
+- Destination URLs are neutral, high-traffic, reasonably fast-loading sites (e.g., Google), but are configurable by the host site. For example, in countries that block Google, the default should be set to a local search engine or news site instead. As far as possible, locale-independent sites should be used as it's possible the sensitive site is in a different language from the user's native language that they typically use to browse the web.
 - Default text is clear and unambiguous, but is configurable, e.g. for other languages or to add context-specific safety instructions.
+- Easy to add to any site, with zero dependencies, sensible defaults, styles that won't be broken by the host site's CSS, and minimal technical knowledge required.
+
+## Design Decisions
+
+- Color
+  - Red (instantly draws the eye) vs yellow (also easily visible, but less likely to immediately draw the eye of an adversary glancing at the screen)?
+- Shortcut key
+  - <kbd>Esc</kbd> (easy to find without looking, and already associated with "exit" actions in many contexts, commonly used in existing implementations) vs other?
+  - Should <kbd>Esc</kbd> cause exit in all contexts, or only if no other action is triggered by it? E.g. if a text box is focused, should <kbd>Esc</kbd> still trigger exit, or should it only unfocus the text box, with only the second press triggering exit? The former is faster and more likely to be effective in an emergency, but the latter is less likely to cause accidental exits while using the site.
+- Tab navigation/opening behavior
+  - Is it better to open a new tab in addition to navigating the old one? This means the top tab is guaranteed to have fully clean history, at the cost of possibly looking more suspicious if both tabs are visibly loading at the same time (e.g. due to spinner in tab UI).
+
+## Limitations
+
+- Doesn't clear all evidence of the sensitive site (e.g. browser history), because browsers do not allow control over this. Mitigation: Inform users of this limitation and link to information on how to clear their history.
+- Doesn't fully clear back-button history in the original tab. This is impossible to do in principle, because browsers do not allow tabs to close themselves from JavaScript, and the best we can do is `window.location.replace()`, which overwrites the current history entry but doesn't remove previous entries. Mitigation: Open a new, history-less tab in addition to navigating the current tab, which will show up on top.
 
 ## Usage via CDN
 
@@ -47,25 +63,28 @@ Then place the component anywhere in your `<body>`.
 - **Shadow DOM**: Styles are encapsulated and won't leak into or be broken by your site's CSS.
 - **Zero Dependencies**: Just drop it in.
 
-## TODO Features
+## TODO
 
 - **Graceful Degradation**: If JavaScript is disabled, a simple link should still be available.
 - **Accessibility**: Ensure the button is accessible via keyboard and screen readers.
 - **Mobile Optimization**: Adjust styles for smaller screens and touch interactions. E.g. maybe BOTTOM right on mobile for easier thumb access?
+- Maybe add invisible hit box (`z-index: -2147483648` to avoid interfering with other elements) around the button to make it easier to click in a panic?
+- Add e2e tests with Puppeteer.
 
 ## Configuration
 
 Tags for limited rich text (`b`, `i`, `strong`, `em`, and `kbd`) are supported. For example, `{#kbd}...{/kbd}` tags display as keyboard keys.
 
-| Attribute              | Description                                               | Default                                                                                                 |
-| ---------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `foreground-url`       | The URL to open in a new, history-less tab.               | https://www.google.com/                                                                                 |
-| `background-url`       | The URL the current tab navigates to (obscuring history). | https://www.wikipedia.org/                                                                              |
-| `label`                | The main text on the button.                              | Quick Exit                                                                                              |
-| `shortcut-description` | Small text description of the keyboard shortcut.          | Or press {#kbd}Esc{/kbd} on your keyboard.                                                              |
-| `safety-text`          | Preceding text for the safety link.                       | The button above will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history |
-| `safety-link-text`     | Text for the safety link.                                 | Learn how to hide your internet history.                                                                |
-| `safety-link-url`      | URL for the safety link.                                  | https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/           |
+| Attribute                   | Description                                               | Default                                                                                                 |
+| --------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `foreground-url`            | The URL to open in a new, history-less tab.               | https://www.google.com/                                                                                 |
+| `background-url`            | The URL the current tab navigates to (obscuring history). | https://www.wikipedia.org/                                                                              |
+| `i18n-label`                | The main text on the button.                              | Quick Exit                                                                                              |
+| `i18n-shortcut-description` | Small text description of the keyboard shortcut.          | Or press {#kbd}Esc{/kbd} key.                                                                           |
+| `i18n-safety-text`          | Preceding text for the safety link.                       | The button above will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history |
+| `i18n-safety-link-text`     | Text for the safety link.                                 | Learn how to hide your internet history.                                                                |
+| `i18n-safety-link-url`      | URL for the safety link.                                  | https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/           |
+| `i18n-safety-information`   | Aria label for the safety information tooltip.            | Safety Information                                                                                      |
 
 ## Custom Styling
 
@@ -95,5 +114,7 @@ Some good but imperfect implementations:
   - Includes keyboard shortcut. Overwrites current site _title_ before navigation, but can still be navigated back to via "Back" button.
 - https://github.com/bboyle/quick-exit
   - Nice visual design, but only overwrites current history entry to current site's home page, which would often still be sensitive.
-- Implementation on https://womensaid.org.uk/
+- https://womensaid.org.uk/
   - Good safety/navigation features, but a little small and easy to miss, and lacking help or further info link.
+- https://www.thehotline.org/
+  - Includes keyboard shortcut of pressing `Esc` twice. Nice info popup, but no link, plus the info popup is no longer visible lower down the page.
