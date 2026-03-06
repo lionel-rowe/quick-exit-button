@@ -132,7 +132,9 @@ export class QuickExitButton extends HTMLElement {
 
 		const $toggle = shadowRoot.querySelector('.info-toggle[data-i18n=safety-information]')!
 		const $info = shadowRoot.querySelector('.safety-info') as HTMLElement
-		const $infoClose = shadowRoot.querySelector('button.safety-info-close' as 'button')!
+		const $infoClose = shadowRoot.querySelector(
+			'button.safety-info-close[data-i18n=safety-info-close]' as 'button',
+		)!
 		const $exitbutton = shadowRoot.querySelector('.exit-button')!
 
 		const $buttonLabel = shadowRoot.querySelector('[data-i18n=button-label]')!
@@ -147,6 +149,7 @@ export class QuickExitButton extends HTMLElement {
 
 		$safetyLink.href = getString('safety-link-url', this.#translations)
 		$toggle.ariaLabel = getString('safety-information', this.#translations)
+		$infoClose.ariaLabel = getString('close', this.#translations)
 
 		$exitbutton.addEventListener('click', this, { signal: this.#ac?.signal })
 
