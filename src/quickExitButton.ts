@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
-import { renderRichText } from './richText.ts'
+import { renderMarkdown } from './markdown.ts'
 import { getString, i18nKeys } from './i18n.ts'
 
 export class QuickExitButton extends HTMLElement {
@@ -119,10 +119,10 @@ export class QuickExitButton extends HTMLElement {
 		const $safetyText = shadowRoot.querySelector('[data-i18n=safety-text]')!
 		const $safetyLink = shadowRoot.querySelector('a[data-i18n=safety-link]' as 'a')!
 
-		renderRichText($buttonLabel, getString('label', this))
-		renderRichText($shortcutDescription, getString('shortcut-description', this))
-		renderRichText($safetyText, getString('safety-text', this))
-		renderRichText($safetyLink, getString('safety-link-text', this))
+		renderMarkdown($buttonLabel, getString('label', this))
+		renderMarkdown($shortcutDescription, getString('shortcut-description', this))
+		renderMarkdown($safetyText, getString('safety-text', this))
+		renderMarkdown($safetyLink, getString('safety-link-text', this))
 
 		$safetyLink.href = getString('safety-link-url', this)
 		$toggle.ariaLabel = getString('safety-information', this)

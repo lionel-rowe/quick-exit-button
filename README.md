@@ -74,18 +74,18 @@ Then place the component anywhere in your `<body>`.
 
 ## Configuration
 
-Tags for limited rich text (`b`, `i`, `strong`, `em`, and `kbd`) are supported. For example, `{#kbd}...{/kbd}` tags display as keyboard keys.
+Some minimal markdown formatting (`**strong**`, `_emphasis_`, and `<kbd>keyboard</kbd>`) are supported.
 
-| Attribute              | Description                                               | Default                                                                                                      |
-| ---------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `foreground-url`       | The URL to open in a new, history-less tab.               | https://www.google.com/                                                                                      |
-| `background-url`       | The URL the current tab navigates to (obscuring history). | https://www.wikipedia.org/                                                                                   |
-| `label`                | The main text on the button.                              | Quick Exit                                                                                                   |
-| `shortcut-description` | Small text description of the keyboard shortcut.          | Or press {#kbd}Esc{/kbd} key.                                                                                |
-| `safety-text`          | Preceding text for the safety link.                       | The Quick Exit button will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history |
-| `safety-link-text`     | Text for the safety link.                                 | Learn how to hide your internet history.                                                                     |
-| `safety-link-url`      | URL for the safety link.                                  | https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/                |
-| `safety-information`   | Aria label for the safety information tooltip.            | Safety Information                                                                                           |
+| Attribute              | Description                                               | Default                                                                                                    |
+| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `foreground-url`       | The URL to open in a new, history-less tab.               | `https://www.google.com/`                                                                                  |
+| `background-url`       | The URL the current tab navigates to (obscuring history). | `https://www.wikipedia.org/`                                                                               |
+| `label`                | The main text on the button.                              | `Quick Exit`                                                                                               |
+| `shortcut-description` | Small text description of the keyboard shortcut.          | `Or press <kbd>Esc</kbd> key.`                                                                             |
+| `safety-text`          | Preceding text for the safety link.                       | `The Quick Exit button will take you to a safe page. Note that it will **NOT** hide your internet history` |
+| `safety-link-text`     | Text for the safety link.                                 | `Learn how to hide your internet history.`                                                                 |
+| `safety-link-url`      | URL for the safety link.                                  | `https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/`            |
+| `safety-information`   | Aria label for the safety information tooltip.            | `Safety Information`                                                                                       |
 
 ## Custom Styling
 
