@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="./favicon.svg">
+		<title>Quick Exit Demo: Custom</title>
+		<link rel="stylesheet" href="./demo.css">
+		<!-- Import the component -->
+		<script src="./quick-exit-button.min.js"></script>
+		<template>
+			<quick-exit-button>
+				<style>
+					:host {
+						--bg: firebrick;
+						--fg: white;
+						--help-icon-bg: white;
+						--help-icon-fg: blue;
+					}
+
+					a:not(:hover) {
+						text-decoration: none;
+					}
+				</style>
+				<script type="application/json">
+					{
+						"_locale": "zh-CN",
+						"foreground-url": "https://baidu.com/",
+						"background-url": "https://bing.com/",
+						"label": "快速退出",
+						"shortcut-description": "或按 <kbd>Esc</kbd> 键。",
+						"safety-text": "快速退出按钮会将您带到一个安全页面。请注意，它**不会隐藏您的上网记录**。",
+						"safety-link-text": "了解如何隐藏您的上网记录。",
+						"safety-link-url": "https://example.com/safety-resources",
+						"safety-information": "安全信息"
+					}
+				</script>
+			</quick-exit-button>
+		</template>
+	</head>
+	<body>
+		<h1>Quick Exit Button Demo</h1>
+		<p>
+			This page demonstrates how to customize the <code>&lt;quick-exit-button&gt;</code> web component with
+			different URLs, translations, and styles.
+		</p>
+		<div>
+			<button onclick="localStorage.clear(); location.reload();">Reset</button>
+		</div>
+
+		<div>
+			<h2>Links</h2>
+
+			<p><a href=".">Home</a></p>
+		</div>
+
+		<div>
+			<h2>Code</h2>
+			<pre>
+				<script src="./renderFromTemplate.js"></script>
+			</pre>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="./favicon.svg">
+		<title>Quick Exit Demo: Custom</title>
+		<link rel="stylesheet" href="./demo.css">
+		<!-- Import the component -->
+		<script src="./quick-exit-button.min.js"></script>
+		<template>
+			<quick-exit-button>
+				<script type="application/json">
+					{
+						"_locale": "ar",
+						"foreground-url": "https://www.google.com/",
+						"background-url": "https://ar.wikipedia.org/",
+						"label": "خروج سريع",
+						"shortcut-description": "أو اضغط على مفتاح <kbd>Esc</kbd>.",
+						"safety-text": "سينقلك زر الخروج السريع إلى صفحة آمنة. لاحظ أنه **لن** يخفي سجل تصفحك للإنترنت.",
+						"safety-link-text": "تعرّف على كيفية إخفاء سجل تصفحك للإنترنت.",
+						"safety-link-url": "https://example.com/safety-resources",
+						"safety-information": "معلومات السلامة"
+					}
+				</script>
+			</quick-exit-button>
+		</template>
+	</head>
+	<body>
+		<h1>Quick Exit Button Demo</h1>
+		<p>
+			This page demonstrates how to customize the <code>&lt;quick-exit-button&gt;</code> web component with
+			different URLs, translations, and styles.
+		</p>
+		<div>
+			<button onclick="localStorage.clear(); location.reload();">Reset</button>
+		</div>
+
+		<div>
+			<h2>Links</h2>
+
+			<p><a href=".">Home</a></p>
+		</div>
+
+		<div>
+			<h2>Code</h2>
+			<pre>
+				<script src="./renderFromTemplate.js"></script>
+			</pre>
+		</div>
+	</body>
+</html>

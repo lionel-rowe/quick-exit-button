@@ -53,14 +53,32 @@ By default, including the script adds a button to your site with default options
 - Graceful Degradation: If JavaScript is disabled, a simple link should still be available (maybe? This could make config more difficult and may be a poor fit for sites with limited technical resources).
 - Stretch goal: A bespoke, permalinked "how to hide your internet history" page designed for readability, usability, and prioritization high->low impact to avoid overwhelming users with information. This might also be interactive or personalized based on the user's browser and device as detected from UA string.
 - Stretch goal: Plugins/widgets/etc for popular CMSs (e.g. WordPress) to make it even easier for non-technical users to add the button to their sites.
-- Stretch goal: Translations of docs and i18n attributes into other languages.
+- Stretch goal: Translations of docs and i18n strings into other languages.
 
-## Configuration
+## Translations
+
+Translations and other locale-specific content can be set by adding a `<script type="application/json">` element inside the component with the relevant properties as a valid JSON object. Any missing properties will fall back to the default English values. For example:
+
+```html
+<quick-exit-button>
+	<script type="application/json">
+		{
+			"_locale": "zh-CN",
+			"foreground-url": "https://www.baidu.com/",
+			"background-url": "https://www.sohu.com/",
+			"label": "快速退出"
+		}
+	</script>
+</quick-exit-button>
+```
 
 Some minimal markdown formatting (`**strong**`, `_emphasis_`, and `<kbd>keyboard</kbd>`) are supported.
 
-| Attribute              | Description                                                            | Default                                                                                                    |
+The properties that can be set are as follows:
+
+| Key                    | Description                                                            | Default                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `_locale`              | The locale of the translation, used for formatting purposes.           | `en`                                                                                                       |
 | `foreground-url`       | The URL to open in a new, history-less tab.                            | `https://www.google.com/`                                                                                  |
 | `background-url`       | The URL the current tab navigates to (obscuring last item of history). | `https://www.wikipedia.org/`                                                                               |
 | `label`                | The main text on the button.                                           | `Quick Exit`                                                                                               |

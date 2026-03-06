@@ -1,5 +1,5 @@
 import { renderMarkdown } from './markdown.ts'
-import { getString, i18nKeys } from './i18n.ts'
+import { getString, getTextInfoFromLocale, I18nData, i18nKeys } from './i18n.ts'
 import { ls } from './localStorage.ts'
 
 export class QuickExitButton extends HTMLElement {
@@ -11,12 +11,22 @@ export class QuickExitButton extends HTMLElement {
 	}
 
 	#ac: AbortController | null = null
-	#mutationObserver = new MutationObserver(() => this.#updateCustomStyles())
+	#mutationObserver = new MutationObserver(() => this.#updateShadowContentFromDirectChildren())
 	#styleElements = new Set<HTMLStyleElement | HTMLLinkElement>()
 
-	#updateCustomStyles() {
+	#translations: Partial<I18nData> = {}
+
+	#updateShadowContentFromDirectChildren() {
 		for (const $el of this.querySelectorAll('style, link[rel=stylesheet]' as 'style' | 'link')) {
 			this.#styleElements.add($el)
+		}
+		for (const $el of this.querySelectorAll('script[type$="/json"]' as 'script')) {
+			try {
+				const data = JSON.parse($el.textContent)
+				this.#translations = data
+			} catch (e) {
+				console.error(e)
+			}
 		}
 	}
 
@@ -36,7 +46,7 @@ export class QuickExitButton extends HTMLElement {
 		const $els = [...document.querySelectorAll('quick-exit-button')]
 		for (const $el of $els.slice(0, -1)) $el.remove()
 
-		this.#updateCustomStyles()
+		this.#updateShadowContentFromDirectChildren()
 		this.#render()
 		this.#setupWindowListeners()
 
@@ -73,7 +83,7 @@ export class QuickExitButton extends HTMLElement {
 		function () {
 			// Open the foreground URL in a new, history-less tab.
 			// MUST be done first to avoid popup blockers engaging after navigation/DOM changes.
-			open(getString('foreground-url', this), '_blank', 'noopener,noreferrer')
+			open(getString('foreground-url', this.#translations), '_blank', 'noopener,noreferrer')
 		},
 		() => {
 			// Immediately blank page content and favicon and use a generic title in case of slow
@@ -83,11 +93,11 @@ export class QuickExitButton extends HTMLElement {
 		function () {
 			try {
 				// Use replace() to obscure history so back button fails
-				location.replace(getString('background-url', this))
+				location.replace(getString('background-url', this.#translations))
 			} catch (_e) {
 				// If `replace` fails for some reason, fallback to `assign` which
 				// at least navigates away, but may leave a history entry
-				location.assign(getString('background-url', this))
+				location.assign(getString('background-url', this.#translations))
 			}
 		},
 	]
@@ -113,6 +123,10 @@ export class QuickExitButton extends HTMLElement {
 	}
 
 	#render() {
+		const locale = getString('_locale', this.#translations)
+		this.lang = locale
+		this.dir = getTextInfoFromLocale(locale).direction
+
 		const { shadowRoot } = this
 		shadowRoot.innerHTML = '{{ @include template.html }}'
 
@@ -126,13 +140,13 @@ export class QuickExitButton extends HTMLElement {
 		const $safetyText = shadowRoot.querySelector('[data-i18n=safety-text]')!
 		const $safetyLink = shadowRoot.querySelector('a[data-i18n=safety-link]' as 'a')!
 
-		renderMarkdown($buttonLabel, getString('label', this))
-		renderMarkdown($shortcutDescription, getString('shortcut-description', this))
-		renderMarkdown($safetyText, getString('safety-text', this))
-		renderMarkdown($safetyLink, getString('safety-link-text', this))
+		renderMarkdown($buttonLabel, getString('label', this.#translations))
+		renderMarkdown($shortcutDescription, getString('shortcut-description', this.#translations))
+		renderMarkdown($safetyText, getString('safety-text', this.#translations))
+		renderMarkdown($safetyLink, getString('safety-link-text', this.#translations))
 
-		$safetyLink.href = getString('safety-link-url', this)
-		$toggle.ariaLabel = getString('safety-information', this)
+		$safetyLink.href = getString('safety-link-url', this.#translations)
+		$toggle.ariaLabel = getString('safety-information', this.#translations)
 
 		$exitbutton.addEventListener('click', this, { signal: this.#ac?.signal })
 

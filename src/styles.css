@@ -1,5 +1,3 @@
-/* -2147483648 */
-
 :host {
 	--bg: linear-gradient(135deg, #ffeb3b, #fbc02d);
 	--fg: black;
@@ -9,7 +7,11 @@
 	--inset: 10px;
 	position: fixed;
 	top: var(--inset);
+	left: auto;
 	right: var(--inset);
+	inset-inline-start: auto;
+	inset-inline-end: var(--inset);
+	/* z-index allowed range: [-2147483648, 2147483647] */
 	z-index: 2147483647;
 	display: flex;
 	flex-direction: column;
