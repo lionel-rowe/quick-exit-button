@@ -1,17 +1,13 @@
 import { serveFile } from '@std/http/file-server'
 import { join } from '@std/path'
-import { watch } from '../scripts/build.ts'
+import { watch } from './build.ts'
 
 // fire-and-forget, to run in parallel with the server
 watch()
 
 Deno.serve({ port: 8000 }, (req) => {
 	const url = new URL(req.url)
-	let path = url.pathname
-	if (path === '/') path = '/index.html'
+	const path = url.pathname === '/' ? '/index.html' : url.pathname
 
-	return serveFile(
-		req,
-		join('./docs', path.replace(/(?:\.\w+)?$/, (m) => m || '.html')),
-	)
+	return serveFile(req, join('./docs', path.replace(/(?:\.\w+)?$/, (m) => m || '.html')))
 })

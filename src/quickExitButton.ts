@@ -1,21 +1,22 @@
-/// <reference lib="dom" />
-/// <reference lib="dom.iterable" />
 import { renderMarkdown } from './markdown.ts'
 import { getString, i18nKeys } from './i18n.ts'
 
 export class QuickExitButton extends HTMLElement {
+	declare shadowRoot: ShadowRoot
+
 	constructor() {
 		super()
 		this.attachShadow({ mode: 'open' })
-
-		this.#updateCustomStyles()
-		new MutationObserver(() => this.#updateCustomStyles()).observe(this, { childList: true, subtree: true })
 	}
 
-	#styleElements: (HTMLStyleElement | HTMLLinkElement)[] = []
+	#ac: AbortController | null = null
+	#mutationObserver = new MutationObserver(() => this.#updateCustomStyles())
+	#styleElements = new Set<HTMLStyleElement | HTMLLinkElement>()
 
 	#updateCustomStyles() {
-		this.#styleElements = [...this.querySelectorAll('style, link[rel=stylesheet]' as 'style' | 'link')]
+		for (const $el of this.querySelectorAll('style, link[rel=stylesheet]' as 'style' | 'link')) {
+			this.#styleElements.add($el)
+		}
 	}
 
 	static get observedAttributes() {
@@ -30,23 +31,27 @@ export class QuickExitButton extends HTMLElement {
 
 	connectedCallback() {
 		// This is a singleton element, so we remove any existing instances if this is added again for some reason
+		// (e.g. added once by initial script, overridden by user manually inserting a custom version)
 		const $els = [...document.querySelectorAll('quick-exit-button')]
-		for (const [i, $el] of $els.entries()) {
-			if (i !== $els.length - 1) $el.remove()
-		}
+		for (const $el of $els.slice(0, -1)) $el.remove()
 
+		this.#updateCustomStyles()
 		this.#render()
 		this.#setupWindowListeners()
+
+		// re-render with updated `style` elements if they are added/removed/changed after initial render
+		this.#mutationObserver.observe(this, { childList: true, subtree: true })
 	}
 
 	disconnectedCallback() {
 		this.#cleanupWindowListeners()
+		this.#mutationObserver.disconnect()
 	}
 
-	#ac: AbortController | null = null
-
-	handleEvent(e: KeyboardEvent) {
-		if (e.key === 'Escape') {
+	handleEvent(e: KeyboardEvent | MouseEvent) {
+		if (e instanceof KeyboardEvent && e.key === 'Escape') {
+			this.#teardown()
+		} else if (e instanceof MouseEvent) {
 			this.#teardown()
 		}
 	}
@@ -107,7 +112,7 @@ export class QuickExitButton extends HTMLElement {
 	}
 
 	#render() {
-		const shadowRoot = this.shadowRoot!
+		const { shadowRoot } = this
 		shadowRoot.innerHTML = '{{ @include template.html }}'
 
 		const $toggle = shadowRoot.querySelector('.info-toggle[data-i18n=safety-information]')!
@@ -127,7 +132,7 @@ export class QuickExitButton extends HTMLElement {
 		$safetyLink.href = getString('safety-link-url', this)
 		$toggle.ariaLabel = getString('safety-information', this)
 
-		$exitbutton.addEventListener('click', this.#teardown.bind(this))
+		$exitbutton.addEventListener('click', this, { signal: this.#ac?.signal })
 
 		const toggle = (val: boolean) => () => {
 			$info.hidden = !val
@@ -159,7 +164,6 @@ export class QuickExitButton extends HTMLElement {
 		$toggle.addEventListener('focus', show)
 		$toggle.addEventListener('click', show)
 
-		// this.#updateCustomStyles()
-		this.shadowRoot!.append(...this.#styleElements)
+		shadowRoot.append(...this.#styleElements)
 	}
 }

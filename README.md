@@ -114,3 +114,5 @@ Simply add a `<style>` element inside the component. CSS variables can be set on
   - Good safety/navigation features, but a little small and easy to miss, and lacking help or further info link.
 - https://www.thehotline.org/
   - Includes keyboard shortcut of pressing `Esc` twice. Nice info popup, but no link, plus the info popup is no longer visible lower down the page.
+- https://wordpress.org/plugins/safety-exit/
+  - Handy plug-and-play WordPress plugin. Good safety/navigation features, but no immediate screen blanking. Always pinned to bottom right or bottom left of screen, no option for top. Lacking help or further info link.
