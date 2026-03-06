@@ -84,8 +84,7 @@ export async function watch() {
 	buildJs()
 	for await (const event of Deno.watchFs(IN_DIR)) {
 		if (event.kind === 'modify') {
-			const hasWatchedPaths = event.paths.some((path) => /^\.(?:m?[jt]s|css|txt)$/.test(extname(path)))
-			if (hasWatchedPaths) buildJs()
+			buildJs()
 		}
 	}
 }

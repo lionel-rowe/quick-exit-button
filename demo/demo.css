@@ -1,0 +1,31 @@
+body {
+	font-family: sans-serif;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	line-height: 1.6;
+}
+h1, h2 {
+	color: #333;
+}
+.content-block {
+	background: #f4f4f4;
+	padding: 20px;
+	margin-bottom: 20px;
+	border-radius: 8px;
+}
+.spacer {
+	height: 1500px;
+	background: linear-gradient(to bottom, #fff, #eee);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #888;
+	border: 1px dashed #ccc;
+	margin: 20px 0;
+}
+pre {
+	tab-size: 4;
+	white-space: pre-wrap;
+	font-size: 0.8em;
+}

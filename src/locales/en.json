@@ -1,0 +1,10 @@
+{
+	"foreground-url": "https://www.google.com/",
+	"background-url": "https://www.wikipedia.org/",
+	"label": "Quick Exit",
+	"shortcut-description": "Or press {#kbd}Esc{/kbd} key.",
+	"safety-text": "The Quick Exit button will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history.",
+	"safety-link-text": "Learn how to hide your internet history.",
+	"safety-link-url": "https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/",
+	"safety-information": "Safety Information"
+}

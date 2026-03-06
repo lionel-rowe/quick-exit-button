@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link
+			rel="icon"
+			href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTE2IDI2YTMgMyAwIDExMC02IDMgMyAwIDAxMCA2em0tMy0yMmg2djE0aC02VjR6IiBmaWxsPSJyZWQiLz48L3N2Zz4="
+			type="image/svg+xml"
+		>
+		<title>Quick Exit Demo: Custom</title>
+		<link rel="stylesheet" href="/demo.css">
+		<!-- Import the component -->
+		<script src="/dist/quick-exit-button.js"></script>
+		<template>
+			<quick-exit-button
+				foreground-url="https://baidu.com/"
+				background-url="https://bing.com/"
+				label="快速退出"
+				shortcut-description="或按 {#kbd}Esc{/kbd} 键。"
+				safety-text="快速退出按钮会将您带到一个安全页面。请注意，它{#b}不会隐藏您的上网记录{/b}。"
+				safety-link-text="了解如何隐藏您的上网记录。"
+				safety-link-url="https://example.com/safety-resources"
+				safety-information="安全信息"
+			>
+				<style>
+					:host {
+						--bg: firebrick;
+						--fg: white;
+						--help-icon-bg: white;
+						--help-icon-fg: blue;
+					}
+
+					a:not(:hover) {
+						text-decoration: none;
+					}
+				</style>
+			</quick-exit-button>
+		</template>
+	</head>
+	<body>
+		<h1>Quick Exit Button Demo</h1>
+		<p>
+			This page demonstrates how to customize the <code>&lt;quick-exit-button&gt;</code> web component with
+			different URLs, translations, and styles.
+		</p>
+
+		<div>
+			<h2>Links</h2>
+
+			<p><a href="/">Home</a></p>
+		</div>
+
+		<div>
+			<h2>Code</h2>
+			<pre>
+				<script>
+					const $template = document.querySelector('template')
+					const $el = $template.content.firstElementChild
+					const code = $template.innerHTML
+					document.body.insertAdjacentElement('afterbegin', $el.cloneNode(true))
+
+					const $pre = document.currentScript.closest('pre')
+					const $code = document.createElement('code')
+					$pre.textContent = ''
+					$pre.append($code)
+
+					$code.textContent = code
+						.replaceAll(new RegExp(`^${code.match(/[\t ]+/g)[0]}`, 'gm'), '') // remove indentation
+						.replaceAll(/<[^>]+>/g, (m) => {
+							return m
+								.replaceAll(
+									/ ([a-z0-9\-]+=)/gi,
+									'\n\t$1'
+								)
+								.replace('">', '"\n>')
+						})
+						.trim()
+				</script>
+			</pre>
+		</div>
+	</body>
+</html>

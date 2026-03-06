@@ -1,4 +1,5 @@
-import { serveDir } from '@std/http/file-server'
+import { serveDir, serveFile } from '@std/http/file-server'
+import { join } from '@std/path'
 import { watch } from '../scripts/build.ts'
 
 // fire-and-forget, to run in parallel with the server
@@ -10,12 +11,11 @@ Deno.serve({ port: 8000 }, async (req) => {
 		return serveDir(req)
 	}
 
-	return new Response(
-		await Deno.readTextFile('./demo/index.html'),
-		{
-			headers: {
-				'Content-Type': 'text/html',
-			},
-		},
+	let path = url.pathname
+	if (path === '/') path = '/index.html'
+
+	return serveFile(
+		req,
+		join('./demo', path.replace(/(?:\.\w+)?$/, (m) => m || '.html')),
 	)
 })

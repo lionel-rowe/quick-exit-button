@@ -1,6 +1,7 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 import { renderRichText } from './richText.ts'
+import { getString, i18nKeys } from './i18n.ts'
 
 export class QuickExitButton extends HTMLElement {
 	constructor() {
@@ -11,21 +12,14 @@ export class QuickExitButton extends HTMLElement {
 		new MutationObserver(() => this.#updateCustomStyles()).observe(this, { childList: true, subtree: true })
 	}
 
+	#styleElements: (HTMLStyleElement | HTMLLinkElement)[] = []
+
 	#updateCustomStyles() {
-		this.shadowRoot!.append(...this.querySelectorAll('style, link[rel=stylesheet]'))
+		this.#styleElements = [...this.querySelectorAll('style, link[rel=stylesheet]' as 'style' | 'link')]
 	}
 
 	static get observedAttributes() {
-		return [
-			'foreground-url',
-			'background-url',
-			'i18n-label',
-			'i18n-shortcut-description',
-			'i18n-safety-text',
-			'i18n-safety-link-text',
-			'i18n-safety-link-url',
-			'i18n-safety-information',
-		]
+		return i18nKeys
 	}
 
 	attributeChangedCallback(_name: string, oldValue: string, newValue: string) {
@@ -69,47 +63,11 @@ export class QuickExitButton extends HTMLElement {
 		this.#ac = null
 	}
 
-	get #foregroundUrl() {
-		return this.getAttribute('foreground-url') ?? 'https://www.google.com/'
-	}
-
-	get #backgroundUrl() {
-		return this.getAttribute('background-url') ?? 'https://www.wikipedia.org/'
-	}
-
-	get #buttonLabel() {
-		return this.getAttribute('i18n-label') ?? 'Quick Exit'
-	}
-
-	get #shortcutDescription() {
-		return this.getAttribute('i18n-shortcut-description') ??
-			'Or press {#kbd}Esc{/kbd} key.'
-	}
-
-	get #safetyText() {
-		return this.getAttribute('i18n-safety-text') ??
-			'The button above will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history.'
-	}
-
-	get #safetyLinkText() {
-		return this.getAttribute('i18n-safety-link-text') ??
-			'Learn how to hide your internet history.'
-	}
-
-	get #safetyLinkUrl() {
-		return this.getAttribute('i18n-safety-link-url') ??
-			'https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/'
-	}
-
-	get #safetyInformation() {
-		return this.getAttribute('i18n-safety-information') ?? 'Safety Information'
-	}
-
 	#teardowns: ((this: QuickExitButton) => void)[] = [
 		function () {
 			// Open the foreground URL in a new, history-less tab.
 			// MUST be done first to avoid popup blockers engaging after navigation/DOM changes.
-			open(this.#foregroundUrl, '_blank', 'noopener,noreferrer')
+			open(getString('foreground-url', this), '_blank', 'noopener,noreferrer')
 		},
 		() => {
 			// Immediately blank page content and favicon and use a generic title in case of slow
@@ -119,11 +77,11 @@ export class QuickExitButton extends HTMLElement {
 		function () {
 			try {
 				// Use replace() to obscure history so back button fails
-				location.replace(this.#backgroundUrl)
+				location.replace(getString('background-url', this))
 			} catch (_e) {
 				// If `replace` fails for some reason, fallback to `assign` which
 				// at least navigates away, but may leave a history entry
-				location.assign(this.#backgroundUrl)
+				location.assign(getString('background-url', this))
 			}
 		},
 	]
@@ -159,15 +117,15 @@ export class QuickExitButton extends HTMLElement {
 		const $buttonLabel = shadowRoot.querySelector('[data-i18n=button-label]')!
 		const $shortcutDescription = shadowRoot.querySelector('[data-i18n=shortcut-description]')!
 		const $safetyText = shadowRoot.querySelector('[data-i18n=safety-text]')!
-		const $safetyLink = shadowRoot.querySelector('a[data-i18n=safety-link]')! as HTMLAnchorElement
+		const $safetyLink = shadowRoot.querySelector('a[data-i18n=safety-link]' as 'a')!
 
-		renderRichText($buttonLabel, this.#buttonLabel)
-		renderRichText($shortcutDescription, this.#shortcutDescription)
-		renderRichText($safetyText, this.#safetyText)
-		renderRichText($safetyLink, this.#safetyLinkText)
+		renderRichText($buttonLabel, getString('label', this))
+		renderRichText($shortcutDescription, getString('shortcut-description', this))
+		renderRichText($safetyText, getString('safety-text', this))
+		renderRichText($safetyLink, getString('safety-link-text', this))
 
-		$safetyLink.href = this.#safetyLinkUrl
-		$toggle.ariaLabel = this.#safetyInformation
+		$safetyLink.href = getString('safety-link-url', this)
+		$toggle.ariaLabel = getString('safety-information', this)
 
 		$exitbutton.addEventListener('click', this.#teardown.bind(this))
 
@@ -201,6 +159,7 @@ export class QuickExitButton extends HTMLElement {
 		$toggle.addEventListener('focus', show)
 		$toggle.addEventListener('click', show)
 
-		this.#updateCustomStyles()
+		// this.#updateCustomStyles()
+		this.shadowRoot!.append(...this.#styleElements)
 	}
 }

@@ -8,39 +8,8 @@
 			href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTE2IDI2YTMgMyAwIDExMC02IDMgMyAwIDAxMCA2em0tMy0yMmg2djE0aC02VjR6IiBmaWxsPSJyZWQiLz48L3N2Zz4="
 			type="image/svg+xml"
 		>
-		<title>Sample Page</title>
-		<style>
-			body {
-				font-family: sans-serif;
-				max-width: 800px;
-				margin: 0 auto;
-				padding: 20px;
-				line-height: 1.6;
-			}
-			h1, h2 {
-				color: #333;
-			}
-			.content-block {
-				background: #f4f4f4;
-				padding: 20px;
-				margin-bottom: 20px;
-				border-radius: 8px;
-			}
-			.spacer {
-				height: 1500px;
-				background: linear-gradient(to bottom, #fff, #eee);
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				color: #888;
-				border: 1px dashed #ccc;
-				margin: 20px 0;
-			}
-			pre {
-				tab-size: 4;
-				white-space: pre-wrap;
-			}
-		</style>
+		<title>Quick Exit Demo</title>
+		<link rel="stylesheet" href="/demo.css">
 		<!-- Import the component -->
 		<script src="/dist/quick-exit-button.js"></script>
 	</head>
@@ -50,17 +19,19 @@
 
 		<div>
 			<h2>Links</h2>
-			<p>Here's a fake (internal) link to populate browsing history for testing:</p>
-			<script>
-				const uuid = crypto.randomUUID()
-				document.write(`<a href="/${uuid}">Fake Page ${uuid}</a>`)
-				document.title = `Sample Page: ${
-					new URL(location.href).pathname.slice(1) ?? 'Home'
-				}`
 
-				// for testing
-				window.addEventListener('beforeunload', () => '')
-			</script>
+			<p><a href="/custom">Customized Exit Button</a></p>
+
+			<p>Here's a fake (internal) link to populate browsing history for testing:</p>
+			<p>
+				<script>
+					const uuid = crypto.randomUUID()
+					document.write(`<a href="/?page=${uuid}">Fake Page ${uuid}</a>`)
+					document.title = `Quick Exit Demo: ${
+						new URL(location.href).searchParams.get('page') ?? 'Home'
+					}`
+				</script>
+			</p>
 		</div>
 
 		<div class="content-block">
@@ -79,10 +50,7 @@
 		<div class="content-block">
 			<h2>Configuration Examples</h2>
 			<p>The button currently on this page uses default settings:</p>
-			<code>&lt;quick-exit-button&gt;&lt;/quick-exit-button&gt;</code>
-
-			<p>You can also configure it (view source code):</p>
-			<pre>&lt;quick-exit-button url="https://weather.com" label="Leave Now" theme="orange"&gt;&lt;/quick-exit-button&gt;</pre>
+			<pre><code>&lt;quick-exit-button&gt;&lt;/quick-exit-button&gt;</code></pre>
 		</div>
 
 		<h3>Scroll down to see sticky behavior...</h3>
@@ -90,20 +58,5 @@
 			(Long content to demonstrate scrolling)
 		</div>
 		<p>End of page.</p>
-
-		<!-- The Component -->
-		<!-- You can place this anywhere in the body -->
-		<!-- <quick-exit-button></quick-exit-button> -->
-
-		<!-- <quick-exit-button>
-			<style>
-				.exit-button {
-					background-color: orange;
-				}
-			</style>
-		</quick-exit-button> -->
-
-		<!-- Example of a customized button (commented out to avoid clutter, uncomment to test) -->
-		<!-- <quick-exit-button url="https://www.bbc.com/weather" label="Weather (Esc)" theme="blue"></quick-exit-button> -->
 	</body>
 </html>

@@ -20,10 +20,11 @@ Following the recommendations from [_Click Here to Exit: An Evaluation of Quick 
 - Easy to add to any site, with zero dependencies, sensible defaults, styles that won't be broken by the host site's CSS, and minimal technical knowledge required.
 - Styles are optimized for smaller screens and touch interactions. On mobile, the button is moved to the bottom of the screen for easy thumb access, and the keyboard shortcut description is hidden as it's not relevant without a physical keyboard.
 
-## Design Decisions
+## Tradeoffs
 
 - Color
-  - Red (instantly draws the eye) vs yellow (also easily visible, but less likely to immediately draw the eye of an adversary glancing at the screen)?
+  - Default yellow color - easily noticeable and visible
+  - Red would be even more noticeable, but also more likely to immediately draw the eye of an adversary glancing at the screen from a distance. Choosing yellow also avoids any issues with red-green color blindness.
 - Shortcut key
   - <kbd>Esc</kbd> (easy to find without looking, and already associated with "exit" actions in many contexts, commonly used in existing implementations) vs other?
   - Should <kbd>Esc</kbd> cause exit in all contexts, or only if no other action is triggered by it? E.g. if a text box is focused, should <kbd>Esc</kbd> still trigger exit, or should it only unfocus the text box, with only the second press triggering exit? The former is faster and more likely to be effective in an emergency, but the latter is less likely to cause accidental exits while using the site.
@@ -58,8 +59,8 @@ Then place the component anywhere in your `<body>`.
 
 ## TODO (MVP)
 
-- Decide on yellow vs red default color.
-- Make all colors configurable via CSS variables on `:host`.
+- GitHub pages
+- Show help text on initial page load (with close button to dismiss it)
 - Accessibility: Ensure the button is accessible via keyboard and screen readers (done? Needs checking).
 
 ## TODO (post-MVP)
@@ -69,32 +70,39 @@ Then place the component anywhere in your `<body>`.
 - Add e2e tests with Puppeteer.
 - Stretch goal: A bespoke, permalinked "how to hide your internet history" page designed for readability, usability, and prioritization high->low impact to avoid overwhelming users with information. This might also be interactive or personalized based on the user's browser and device as detected from UA string.
 - Stretch goal: Plugins/widgets/etc for popular CMSs (e.g. WordPress) to make it even easier for non-technical users to add the button to their sites.
-- Stretch goal: Translations of docs and `i18n-*` attributes into other languages.
+- Stretch goal: Translations of docs and i18n attributes into other languages.
 
 ## Configuration
 
 Tags for limited rich text (`b`, `i`, `strong`, `em`, and `kbd`) are supported. For example, `{#kbd}...{/kbd}` tags display as keyboard keys.
 
-| Attribute                   | Description                                               | Default                                                                                                 |
-| --------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `foreground-url`            | The URL to open in a new, history-less tab.               | https://www.google.com/                                                                                 |
-| `background-url`            | The URL the current tab navigates to (obscuring history). | https://www.wikipedia.org/                                                                              |
-| `i18n-label`                | The main text on the button.                              | Quick Exit                                                                                              |
-| `i18n-shortcut-description` | Small text description of the keyboard shortcut.          | Or press {#kbd}Esc{/kbd} key.                                                                           |
-| `i18n-safety-text`          | Preceding text for the safety link.                       | The button above will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history |
-| `i18n-safety-link-text`     | Text for the safety link.                                 | Learn how to hide your internet history.                                                                |
-| `i18n-safety-link-url`      | URL for the safety link.                                  | https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/           |
-| `i18n-safety-information`   | Aria label for the safety information tooltip.            | Safety Information                                                                                      |
+| Attribute              | Description                                               | Default                                                                                                      |
+| ---------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `foreground-url`       | The URL to open in a new, history-less tab.               | https://www.google.com/                                                                                      |
+| `background-url`       | The URL the current tab navigates to (obscuring history). | https://www.wikipedia.org/                                                                                   |
+| `label`                | The main text on the button.                              | Quick Exit                                                                                                   |
+| `shortcut-description` | Small text description of the keyboard shortcut.          | Or press {#kbd}Esc{/kbd} key.                                                                                |
+| `safety-text`          | Preceding text for the safety link.                       | The Quick Exit button will take you to a safe page. Note that it will {#b}NOT{/b} hide your internet history |
+| `safety-link-text`     | Text for the safety link.                                 | Learn how to hide your internet history.                                                                     |
+| `safety-link-url`      | URL for the safety link.                                  | https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/                |
+| `safety-information`   | Aria label for the safety information tooltip.            | Safety Information                                                                                           |
 
 ## Custom Styling
 
-Simply add a `<style>` element inside the component.
+Simply add a `<style>` element inside the component. CSS variables can be set on `--host`, or finer grained rules can also be used to target specific elements. For example:
 
 ```html
 <quick-exit-button>
 	<style>
-		.exit-button {
-			background-color: orange;
+		:host {
+			--bg: firebrick;
+			--fg: white;
+			--help-icon-bg: white;
+			--help-icon-fg: blue;
+		}
+
+		a:not(:hover) {
+			text-decoration: none;
 		}
 	</style>
 </quick-exit-button>
@@ -107,8 +115,6 @@ Simply add a `<style>` element inside the component.
 3. Modify `src/quick-exit-button.mjs` as needed.
 
 ## Prior Art
-
-Some good but imperfect implementations:
 
 - https://github.com/TodayDesign/panic-button
   - Includes keyboard shortcut. Overwrites current site _title_ before navigation, but can still be navigated back to via "Back" button.
