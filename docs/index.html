@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" href="/favicon.svg">
+		<link rel="icon" href="./favicon.svg">
 		<title>Quick Exit Demo</title>
-		<link rel="stylesheet" href="/demo.css">
+		<link rel="stylesheet" href="./demo.css">
 		<!-- Import the component -->
-		<script src="/quick-exit-button.js"></script>
+		<script src="./quick-exit-button.min.js"></script>
 	</head>
 	<body>
 		<h1>Quick Exit Button Demo</h1>
@@ -16,13 +16,13 @@
 		<div>
 			<h2>Links</h2>
 
-			<p><a href="/custom">Customized Exit Button</a></p>
+			<p><a href="./custom">Customized Exit Button</a></p>
 
 			<p>Here's a fake (internal) link to populate browsing history for testing:</p>
 			<p>
 				<script>
 					const uuid = crypto.randomUUID()
-					document.write(`<a href="/?page=${uuid}">Fake Page ${uuid}</a>`)
+					document.write(`<a href="./?page=${uuid}">Fake Page ${uuid}</a>`)
 					document.title = `Quick Exit Demo: ${
 						new URL(location.href).searchParams.get('page') ?? 'Home'
 					}`
