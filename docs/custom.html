@@ -3,15 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link
-			rel="icon"
-			href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHBhdGggZD0iTTE2IDI2YTMgMyAwIDExMC02IDMgMyAwIDAxMCA2em0tMy0yMmg2djE0aC02VjR6IiBmaWxsPSJyZWQiLz48L3N2Zz4="
-			type="image/svg+xml"
-		>
+		<link rel="icon" href="/favicon.svg">
 		<title>Quick Exit Demo: Custom</title>
 		<link rel="stylesheet" href="/demo.css">
 		<!-- Import the component -->
-		<script src="/dist/quick-exit-button.js"></script>
+		<script src="/quick-exit-button.js"></script>
 		<template>
 			<quick-exit-button
 				foreground-url="https://baidu.com/"
@@ -69,10 +65,7 @@
 						.replaceAll(new RegExp(`^${code.match(/[\t ]+/g)[0]}`, 'gm'), '') // remove indentation
 						.replaceAll(/<[^>]+>/g, (m) => {
 							return m
-								.replaceAll(
-									/ ([a-z0-9\-]+=)/gi,
-									'\n\t$1'
-								)
+								.replaceAll(/ ([a-z0-9\-]+=)/gi, '\n\t$1')
 								.replace('">', '"\n>')
 						})
 						.trim()

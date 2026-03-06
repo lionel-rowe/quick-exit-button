@@ -6,7 +6,7 @@ import { cyan, gray } from '@std/fmt/colors'
 import { minify } from 'minify'
 
 const IN_DIR = './src'
-const OUT_PATH = './dist/quick-exit-button.js'
+const OUT_PATH = './docs/quick-exit-button.min.js'
 
 const DEBOUNCE_MS = 200
 
