@@ -36,38 +36,28 @@ Following the recommendations from [_Click Here to Exit: An Evaluation of Quick 
 - Doesn't clear all evidence of the sensitive site (e.g. browser history), because browsers do not allow control over this. Mitigation: Inform users of this limitation and link to information on how to clear their history.
 - Doesn't fully clear back-button history in the original tab. This is impossible to do in principle, because browsers do not allow tabs to close themselves from JavaScript, and the best we can do is `window.location.replace()`, which overwrites the current history entry but doesn't remove previous entries. Mitigation: Open a new, history-less tab in addition to navigating the current tab, which will show up on top.
 
-## Usage via CDN
+## Usage
 
 Add the script to your HTML `<head>` or `<body>`.
 
 ```html
-<script src="https://cdn.example.com/quick-exit-button.js"></script>
+<script src="path/to/quick-exit-button.js"></script>
 ```
 
-Then place the component anywhere in your `<body>`.
+By default, including the script adds a button to your site with default options. If you want to customize the button, you can explicitly include a `<quick-exit-button>` element in your site's HTML, which will override the default one. See the [Configuration](#configuration) and [Custom Styling](#custom-styling) sections below for details on the available options and how to customize the styles.
 
-```html
-<!-- Default behavior: Exits to Wikipedia (current tab) and Google (new tab) -->
-<quick-exit-button></quick-exit-button>
+## TODO
 
-<!-- Custom destination: Exits to BBC Weather -->
-<quick-exit-button foreground-url="https://www.bbc.com/weather"></quick-exit-button>
+### Pre-MVP
 
-<!-- Custom label and background URL -->
-<quick-exit-button label="Leave Site Immediately" background-url="https://weather.com"></quick-exit-button>
-```
-
-## TODO (MVP)
-
-- GitHub pages
 - Show help text on initial page load (with close button to dismiss it)
 - Accessibility: Ensure the button is accessible via keyboard and screen readers (done? Needs checking).
 
-## TODO (post-MVP)
+### Post-MVP
 
-- Graceful Degradation: If JavaScript is disabled, a simple link should still be available (maybe? This could make config more difficult and may be a poor fit for sites with limited technical resources).
-- Maybe add invisible hit box (`z-index: -2147483648` to avoid interfering with other elements) around the button to make it easier to click in a panic?
 - Add e2e tests with Puppeteer.
+- Maybe add invisible hit box (`z-index: -2147483648` to avoid interfering with other elements) around the button to make it easier to click in a panic?
+- Graceful Degradation: If JavaScript is disabled, a simple link should still be available (maybe? This could make config more difficult and may be a poor fit for sites with limited technical resources).
 - Stretch goal: A bespoke, permalinked "how to hide your internet history" page designed for readability, usability, and prioritization high->low impact to avoid overwhelming users with information. This might also be interactive or personalized based on the user's browser and device as detected from UA string.
 - Stretch goal: Plugins/widgets/etc for popular CMSs (e.g. WordPress) to make it even easier for non-technical users to add the button to their sites.
 - Stretch goal: Translations of docs and i18n attributes into other languages.
@@ -76,16 +66,16 @@ Then place the component anywhere in your `<body>`.
 
 Some minimal markdown formatting (`**strong**`, `_emphasis_`, and `<kbd>keyboard</kbd>`) are supported.
 
-| Attribute              | Description                                               | Default                                                                                                    |
-| ---------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `foreground-url`       | The URL to open in a new, history-less tab.               | `https://www.google.com/`                                                                                  |
-| `background-url`       | The URL the current tab navigates to (obscuring history). | `https://www.wikipedia.org/`                                                                               |
-| `label`                | The main text on the button.                              | `Quick Exit`                                                                                               |
-| `shortcut-description` | Small text description of the keyboard shortcut.          | `Or press <kbd>Esc</kbd> key.`                                                                             |
-| `safety-text`          | Preceding text for the safety link.                       | `The Quick Exit button will take you to a safe page. Note that it will **NOT** hide your internet history` |
-| `safety-link-text`     | Text for the safety link.                                 | `Learn how to hide your internet history.`                                                                 |
-| `safety-link-url`      | URL for the safety link.                                  | `https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/`            |
-| `safety-information`   | Aria label for the safety information tooltip.            | `Safety Information`                                                                                       |
+| Attribute              | Description                                                            | Default                                                                                                    |
+| ---------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `foreground-url`       | The URL to open in a new, history-less tab.                            | `https://www.google.com/`                                                                                  |
+| `background-url`       | The URL the current tab navigates to (obscuring last item of history). | `https://www.wikipedia.org/`                                                                               |
+| `label`                | The main text on the button.                                           | `Quick Exit`                                                                                               |
+| `shortcut-description` | Small text description of the keyboard shortcut.                       | `Or press <kbd>Esc</kbd> key.`                                                                             |
+| `safety-text`          | Preceding text for the safety link.                                    | `The Quick Exit button will take you to a safe page. Note that it will **NOT** hide your internet history` |
+| `safety-link-text`     | Text for the safety link.                                              | `Learn how to hide your internet history.`                                                                 |
+| `safety-link-url`      | URL for the safety link.                                               | `https://womensaid.org.uk/information-support/what-is-domestic-abuse/cover-your-tracks-online/`            |
+| `safety-information`   | Aria label for the safety information tooltip.                         | `Safety Information`                                                                                       |
 
 ## Custom Styling
 
@@ -111,8 +101,8 @@ Simply add a `<style>` element inside the component. CSS variables can be set on
 ## Development
 
 1. Clone the repo.
-2. Open `demo/index.html` in a browser to test.
-3. Modify `src/quick-exit-button.mjs` as needed.
+2. Install [Deno 2.x](https://deno.com/), which is used for building the script and serving the demo.
+3. Run `deno task start` to watch for changes and serve the demo at `http://localhost:8000/`.
 
 ## Prior Art
 
