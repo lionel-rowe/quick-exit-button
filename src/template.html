@@ -1,10 +1,9 @@
 <style>{{ @include styles.css }}</style>
 
 <!-- Exit Button -->
-<button part="button" class="exit-button">
+<button type="button" class="exit-button">
 	<div class="button-content">
 		<span class="main-text" data-i18n="button-label"></span>
-		{{ @include close.svg }}
 	</div>
 	<div>
 		<small data-i18n="shortcut-description" class="shortcut-description"></small>
@@ -12,12 +11,17 @@
 </button>
 
 <!-- Info Toggle-->
-<button class="info-toggle" data-i18n="safety-information" aria-describedby="safety-info">
+<button type="button" class="info-toggle" data-i18n="safety-information" aria-describedby="safety-info">
 	{{ @include info.svg }}
 </button>
 
 <!-- Safety Info Box -->
-<div class="safety-info" hidden>
-	<span data-i18n="safety-text"></span>
+<div class="safety-info">
+	<div>
+		<button type="button" class="safety-info-close">
+			{{ @include close.svg }}
+		</button>
+		<span data-i18n="safety-text"></span>
+	</div>
 	<a target="_blank" rel="noopener noreferrer" data-i18n="safety-link"></a>
 </div>

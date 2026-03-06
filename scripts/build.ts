@@ -45,9 +45,11 @@ const buildJs = debounce(async () => {
 
 	if (stderr.length > 0) {
 		const lines = new TextDecoder().decode(stderr).split('\n')
-		for (const line of lines) {
+		for (const [i, line] of lines.entries()) {
 			if (line.includes('experimental')) continue
-			await new Blob([line, '\n']).stream().pipeTo(
+			const data = [line]
+			if (i !== lines.length - 1) data.push('\n')
+			await new Blob(data).stream().pipeTo(
 				Deno.stderr.writable,
 				{ preventClose: true },
 			)

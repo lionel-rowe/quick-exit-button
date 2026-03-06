@@ -1,5 +1,6 @@
 import { renderMarkdown } from './markdown.ts'
 import { getString, i18nKeys } from './i18n.ts'
+import { ls } from './localStorage.ts'
 
 export class QuickExitButton extends HTMLElement {
 	declare shadowRoot: ShadowRoot
@@ -117,6 +118,7 @@ export class QuickExitButton extends HTMLElement {
 
 		const $toggle = shadowRoot.querySelector('.info-toggle[data-i18n=safety-information]')!
 		const $info = shadowRoot.querySelector('.safety-info') as HTMLElement
+		const $infoClose = shadowRoot.querySelector('button.safety-info-close' as 'button')!
 		const $exitbutton = shadowRoot.querySelector('.exit-button')!
 
 		const $buttonLabel = shadowRoot.querySelector('[data-i18n=button-label]')!
@@ -141,7 +143,19 @@ export class QuickExitButton extends HTMLElement {
 			})
 		}
 		const show = toggle(true)
-		const hide = toggle(false)
+		const _hide = toggle(false)
+
+		const safetyInfoClosed = ls.get('safetyInfoClosed') ?? false
+		toggle(!safetyInfoClosed)()
+		$infoClose.addEventListener('click', () => {
+			ls.set('safetyInfoClosed', true)
+			_hide()
+		})
+
+		const hide = () => {
+			const safetyInfoClosed = ls.get('safetyInfoClosed') ?? false
+			if (safetyInfoClosed) _hide()
+		}
 
 		for (const $el of [$toggle, $info]) {
 			$el.addEventListener('mouseenter', show)

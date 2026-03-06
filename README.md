@@ -48,13 +48,6 @@ By default, including the script adds a button to your site with default options
 
 ## TODO
 
-### Pre-MVP
-
-- Show help text on initial page load (with close button to dismiss it)
-- Accessibility: Ensure the button is accessible via keyboard and screen readers (done? Needs checking).
-
-### Post-MVP
-
 - Add e2e tests with Puppeteer.
 - Maybe add invisible hit box (`z-index: -2147483648` to avoid interfering with other elements) around the button to make it easier to click in a panic?
 - Graceful Degradation: If JavaScript is disabled, a simple link should still be available (maybe? This could make config more difficult and may be a poor fit for sites with limited technical resources).

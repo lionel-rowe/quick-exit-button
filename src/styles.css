@@ -74,12 +74,16 @@
 	padding: 0;
 	cursor: pointer;
 	border-radius: 50%;
-	width: 32px;
-	height: 32px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	--scale: 1.15;
+}
+
+.info-toggle svg {
+	--size: 20px;
+	width: var(--size);
+	height: var(--size);
 }
 
 .safety-info {
@@ -116,6 +120,28 @@
 .safety-info a {
 	color: #0066cc;
 	display: block;
+}
+
+.safety-info-close {
+	float: right; /* fallback for old browsers */
+	float: inline-end;
+	background: transparent;
+	border: none;
+	padding: 0;
+	margin-inline-start: 5px;
+	margin-block-end: 5px;
+	font-size: 12px;
+	line-height: 1;
+	cursor: pointer;
+	color: #666;
+}
+.safety-info-close:hover {
+	color: #000;
+}
+.safety-info-close svg {
+	--size: 1em;
+	width: var(--size);
+	height: var(--size);
 }
 
 @media not (min-width: 480px) {
