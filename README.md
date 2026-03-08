@@ -44,7 +44,7 @@ Add the script to your HTML `<head>` or `<body>`.
 <script src="path/to/quick-exit-button.js"></script>
 ```
 
-By default, including the script adds a button to your site with default options. If you want to customize the button, you can explicitly include a `<quick-exit-button>` element in your site's HTML, which will override the default one. See the [Configuration](#configuration) and [Custom Styling](#custom-styling) sections below for details on the available options and how to customize the styles.
+By default, including the script adds a button to your site with default options. If you want to customize the button, you can explicitly include a `<quick-exit-button>` element in your site's HTML, which will override the default one. See the [Translations](#translations) and [Custom Styling](#custom-styling) sections below for details on the available options and how to customize the styles.
 
 ## TODO
 
@@ -117,13 +117,24 @@ Simply add a `<style>` element inside the component. CSS variables can be set on
 
 ## Prior Art
 
-- https://github.com/TodayDesign/panic-button
+### Open Source
+
+- [`TodayDesign/panic-button`](https://github.com/TodayDesign/panic-button)
   - Includes keyboard shortcut. Overwrites current site _title_ before navigation, but can still be navigated back to via "Back" button.
-- https://github.com/bboyle/quick-exit
+- [`bboyle/quick-exit`](https://github.com/bboyle/quick-exit)
   - Nice visual design, but only overwrites current history entry to current site's home page, which would often still be sensitive.
-- https://womensaid.org.uk/
-  - Good safety/navigation features, but a little small and easy to miss, and lacking help or further info link.
-- https://www.thehotline.org/
-  - Includes keyboard shortcut of pressing `Esc` twice. Nice info popup, but no link, plus the info popup is no longer visible lower down the page.
-- https://wordpress.org/plugins/safety-exit/
+- [WordPress `safety-exit` plugin](https://wordpress.org/plugins/safety-exit/)
   - Handy plug-and-play WordPress plugin. Good safety/navigation features, but no immediate screen blanking. Always pinned to bottom right or bottom left of screen, no option for top. Lacking help or further info link.
+
+### Live Sites
+
+This is just a couple of examples from the many sites surveyed in [`KiTeoki/quickExitButtonAnnotations`](https://github.com/KiTeoki/quickExitButtonAnnotations/blob/main/exit_button_sites.csv):
+
+- [thehotline.org](https://www.thehotline.org/)
+  - Excellent, possibly best-in-class implementation:
+    - Includes keyboard shortcut of pressing `Esc` twice.
+    - A large "Security Alert" modal is shown on first page load, which contains useful and well-organized info, including a link, and must be dismissed before continuing. **However**, once dismissed, it doesn't show again and the info becomes inaccessible to the user.
+    - The info at the link itself risks being overwhelming. It also includes some misleading info, such as implying that using a VPN can "help prevent abusive partners from tracking your Internet history" (which is only partially true if the abuser doesn't have access to the victim's devices).
+    - An info sidebar is shown on desktop but not mobile. However, this lacks a link and doesn't scroll with the page. Like the modal, once dismissed, it doesn't show again.
+- [womensaid.org.uk](https://womensaid.org.uk/)
+  - Good safety/navigation features, but a little small and easy to miss, and lacking help or further info link.
